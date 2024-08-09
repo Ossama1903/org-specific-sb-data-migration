@@ -40,12 +40,12 @@ def migrate_lessons(cursor, postgres_cursor, **kwargs):
             new_id = postgres_cursor.fetchone()[0]
             lesson_id_map[mongo_id] = new_id
         else:
-            missing_ids = []
             if moduleID not in module_id_map:
-                missing_ids.append(f"moduleID {moduleID}")
+                print(f"{BColors.OKBLUE}Skipping lesson {mongo_id}, and name = {name} due to missing module {moduleID}")
+                print()
             if iconID not in icon_id_map:
-                missing_ids.append(f"iconID {iconID}")
-            print(f"{BColors.FAIL}Skipping lesson {mongo_id} due to missing {', '.join(missing_ids)}{BColors.ENDC}")
+                print(f"{BColors.FAIL}Skipping lesson {mongo_id}, and name = {name} due to missing icon {iconID}")
+                print()
 
     print(f"{BColors.OKGREEN}Lessons migration completed{BColors.ENDC}")
     return lesson_id_map

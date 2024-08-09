@@ -36,8 +36,12 @@ def migrate_modules(cursor, postgres_cursor, **kwargs):
             postgres_cursor.execute(insert_query, data)
             new_id = postgres_cursor.fetchone()[0]
             module_id_map[str(mongo_id)] = new_id
+            print(f"{BColors.OKCYAN}Migrated {mongo_id}, new id = {new_id}{BColors.OKCYAN}")
         else:
-            print(f"{BColors.FAIL}Skipping module {mongo_id} because it isn't associated to either an organization or an icon{BColors.ENDC}")
+            if organizationId not in org_id_map:
+                print(f"{BColors.FAIL}Skipping module {mongo_id} because it isn't associated to an organization{BColors.ENDC}")
+            else:
+                print(f"{BColors.FAIL}Skipping module {mongo_id} because it isn't associated to an icon{BColors.ENDC}")
 
     print(f"{BColors.OKGREEN}Modules migration completed{BColors.ENDC}")
     return module_id_map
